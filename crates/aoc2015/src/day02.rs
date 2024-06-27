@@ -1,8 +1,11 @@
-fn part2(input_file_path: &str) -> i32 {
+
+type Gift = [u32; 3];
+
+fn part1(input_file_path: &str) -> i32 {
     return -1;
 }
 
-fn part1(input_file_path: &str) -> i32 {
+fn part2(input_file_path: &str) -> i32 {
     return -1;
 }
 

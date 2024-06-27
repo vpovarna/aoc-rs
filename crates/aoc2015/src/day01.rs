@@ -1,4 +1,5 @@
-use aoc_rs::read_to_chars;
+use aoclib::read_to_chars;
+
 
 fn part1(input_file_path: &str) -> i32 {
     let chars = read_to_chars(input_file_path);
