@@ -16,6 +16,10 @@ impl Present {
     fn slack(&self) -> u32 {
         self.0[0] * self.0[1]
     }
+
+    fn ribbon(&self) -> u32 {
+        self.0[0] * self.0[1] * self.0[2] + self.0[0] * 2 + self.0[1] * 2
+    }
 }
 
 fn get_presents(input_file_path: impl AsRef<Path>) -> Vec<Present> {
@@ -44,8 +48,9 @@ fn part1(input_file_path: &str) -> u32 {
         .fold(0, |acc, present| acc + present.slack() + present.surface_area())
 }
 
-fn part2(input_file_path: &str) -> i32 {
-    return -1;
+fn part2(input_file_path: &str) -> u32 {
+    get_presents(input_file_path).iter()
+        .fold(0, |acc, present| acc + present.ribbon())
 }
 
 pub fn run() {
