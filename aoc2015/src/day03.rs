@@ -22,8 +22,36 @@ fn part1(input_file_path: &str) -> usize {
     return visited_houses.len();
 }
 
-fn part2(input_file_path: &str) -> u32 {
-    return 1;
+fn part2(input_file_path: &str) -> usize {
+    let directions = read_to_chars(input_file_path);
+    let mut visited_houses = HashSet::new();
+    visited_houses.insert((0, 0));
+    let mut robo_position = (0, 0);
+    let mut santa_position = (0, 0);
+
+    for (i, direction) in directions.iter().enumerate() {
+        if i % 2 == 0 {
+            match direction {
+                '^' => robo_position.1 -= 1,
+                'v' => robo_position.1 += 1,
+                '>' => robo_position.0 += 1,
+                '<' => robo_position.0 -= 1,
+                _ => panic!("unknown direction")
+            }
+            visited_houses.insert(robo_position);
+        } else {
+            match direction {
+                '^' => santa_position.1 -= 1,
+                'v' => santa_position.1 += 1,
+                '>' => santa_position.0 += 1,
+                '<' => santa_position.0 -= 1,
+                _ => panic!("unknown direction")
+            }
+            visited_houses.insert(santa_position);
+        }
+    }
+
+    return visited_houses.len();
 }
 
 pub fn run() {
