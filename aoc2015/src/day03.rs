@@ -9,13 +9,7 @@ fn part1(input_file_path: &str) -> usize {
     visited_houses.insert(position);
 
     for direction in directions {
-        match direction {
-            '^' => position.1 -= 1,
-            'v' => position.1 += 1,
-            '>' => position.0 += 1,
-            '<' => position.0 -= 1,
-            _ => panic!("unknown direction")
-        }
+        position = update_position(&position, direction);
         visited_houses.insert(position);
     }
 
@@ -31,27 +25,27 @@ fn part2(input_file_path: &str) -> usize {
 
     for (i, direction) in directions.iter().enumerate() {
         if i % 2 == 0 {
-            match direction {
-                '^' => robo_position.1 -= 1,
-                'v' => robo_position.1 += 1,
-                '>' => robo_position.0 += 1,
-                '<' => robo_position.0 -= 1,
-                _ => panic!("unknown direction")
-            }
+            robo_position = update_position(&robo_position, *direction);
             visited_houses.insert(robo_position);
         } else {
-            match direction {
-                '^' => santa_position.1 -= 1,
-                'v' => santa_position.1 += 1,
-                '>' => santa_position.0 += 1,
-                '<' => santa_position.0 -= 1,
-                _ => panic!("unknown direction")
-            }
+            santa_position = update_position(&santa_position, *direction);
             visited_houses.insert(santa_position);
         }
     }
 
     return visited_houses.len();
+}
+
+// Is it better to return a new tuple or should update the position through reference?
+fn update_position(position: &(i32, i32), direction: char) -> (i32, i32) {
+    let delta = match direction {
+        '^' => (0, -1),
+        'v' => (0, 1),
+        '>' => (1, 0),
+        '<' => (-1, 0),
+        _ => panic!("unknown direction")
+    };
+    (position.0 + delta.0, position.1 + delta.1)
 }
 
 pub fn run() {
