@@ -29,7 +29,6 @@ fn get_index(input: String, pattern: &str) -> Option<u32> {
         }
         i += 1;
     }
-    None
 }
 
 fn calculate_md5_hash(input: String) -> String {
