@@ -1,40 +1,24 @@
+use md5::compute;
 use aoclib::read_as_string;
 
-fn part1(input_file_path: &str) -> u32 {
+fn part1(input_file_path: &str) -> usize {
     let input = read_as_string(input_file_path);
-
-    if let Some(value) = get_index(input, "00000") {
-        return value;
-    }
-    return 0;
+    get_lowest_number(input, 5)
 }
 
-fn part2(input_file_path: &str) -> u32 {
+fn part2(input_file_path: &str) -> usize {
     let input = read_as_string(input_file_path);
-
-    if let Some(value) = get_index(input, "000000") {
-        return value;
-    }
-    return 0;
+    get_lowest_number(input, 6)
 }
 
-fn get_index(input: String, pattern: &str) -> Option<u32> {
-    let mut i = 100000;
 
-    loop {
-        let tmp_input = format!("{}{}", input, i);
-        let mut md5_hash = calculate_md5_hash(tmp_input);
-        if md5_hash.starts_with(pattern) {
-            return Some(i);
-        }
-        i += 1;
-    }
-}
-
-fn calculate_md5_hash(input: String) -> String {
-    let md5_hash_raw = md5::compute(input);
-    let md5_hash = format!("{:x}", md5_hash_raw);
-    md5_hash
+fn get_lowest_number(key: String, leading_zeros: usize) -> usize {
+    let pattern = "0".repeat(leading_zeros);
+    (100000..).find(|n| {
+        let md5_hash = compute(format!("{}{}", key, n));
+        let md5 = format!("{:x}", md5_hash);
+        md5.starts_with(&pattern)
+    }).unwrap()
 }
 
 pub fn run() {
