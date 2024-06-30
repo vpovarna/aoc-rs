@@ -3,8 +3,8 @@ use aoclib::read_lines;
 pub fn run() {
     let lines = read_lines("input/2015/day06.txt");
 
-    println!("AoC2015, Day5, part1 solution is: {}", part1(&lines));
-    println!("AoC2015, Day5, part2 solution is: {}", part2(&lines));
+    println!("AoC2015, Day6, part1 solution is: {}", part1(&lines));
+    println!("AoC2015, Day6, part2 solution is: {}", part2(&lines));
 }
 
 fn part1(raw_instructions: &Vec<String>) -> u32 {
