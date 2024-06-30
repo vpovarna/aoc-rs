@@ -53,7 +53,7 @@ fn part2(raw_instructions: &Vec<String>) -> usize {
             for j in from[1]..to[1] + 1 {
                 grid[i][j] = match s.as_str() {
                     "turn_on" => grid[i][j] + 1,
-                    "turn_off" => grid[i][j].saturating_sub(1),
+                    "turn_off" => grid[i][j].saturating_sub(1), //TODO: Check saturating_sub
                     _ => grid[i][j] + 2
                 }
             }
