@@ -1,3 +1,4 @@
+use std::path::Path;
 use aoclib::read_lines;
 
 pub fn run() {
@@ -7,20 +8,36 @@ pub fn run() {
     println!("AoC2015, Day6, part2 solution is: {}", part2(&lines));
 }
 
-fn part1(raw_instructions: &Vec<String>) -> u32 {
+fn part1(raw_instructions: &Vec<String>) -> usize {
     let instructions = parse_instructions(raw_instructions);
+    let mut grid = [[false; 1000]; 1000];
+
     for instruction in instructions {
-        println!("{:?}", instruction)
+        let from = instruction.1;
+        let to = instruction.2;
+
+        let s = instruction.0;
+        for i in (from[0]..to[0] + 1) {
+            for j in from[1]..to[1] + 1 {
+                grid[i][j] = match s.as_str() {
+                    "turn_on" => true,
+                    "turn_off" => false,
+                    _ => !grid[i][j]
+                }
+            }
+        }
     }
-    return 1;
-}
 
-fn get_to(part: &str) -> Vec<usize> {
-    part.split(',').map(|s| s.parse().unwrap()).collect::<Vec<usize>>()
-}
+    let mut sum = 0;
+    for line in grid.iter() {
+        for &is_on in line.iter() {
+            if is_on {
+                sum += 1;
+            }
+        }
+    }
 
-fn get_from(part: &str) -> Vec<usize> {
-    part.split(',').map(|s| s.parse().unwrap()).collect::<Vec<usize>>()
+    sum
 }
 
 fn part2(instructions: &Vec<String>) -> u32 {
@@ -35,12 +52,8 @@ fn parse_instructions(raw_instructions: &Vec<String>) -> Vec<(String, Vec<usize>
         if parts[0] == "turn" {
             let from = get_from(parts[2]);
             let to = get_to(parts[4]);
-            let s = format!("{}{}", parts[0], parts[1]);
+            let s = format!("{}_{}", parts[0], parts[1]);
             instructions.push((s, from, to))
-            //
-            // println!("{:?}", from);
-            // println!("{:?}", to);
-            // println!("-----");
         } else {
             let from = get_from(parts[1]);
             let to = get_from(parts[3]);
@@ -51,3 +64,10 @@ fn parse_instructions(raw_instructions: &Vec<String>) -> Vec<(String, Vec<usize>
     instructions
 }
 
+fn get_to(part: &str) -> Vec<usize> {
+    part.split(',').map(|s| s.parse().unwrap()).collect::<Vec<usize>>()
+}
+
+fn get_from(part: &str) -> Vec<usize> {
+    part.split(',').map(|s| s.parse().unwrap()).collect::<Vec<usize>>()
+}
