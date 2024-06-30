@@ -7,9 +7,10 @@ mod day06;
 
 #[warn(unused_imports)]
 fn main() {
-    day01::run();
-    day02::run();
-    day03::run();
-    day04::run();
-    day05::run();
+    // day01::run();
+    // day02::run();
+    // day03::run();
+    // day04::run();
+    // day05::run();
+    day06::run();
 }
