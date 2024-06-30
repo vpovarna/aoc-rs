@@ -40,8 +40,34 @@ fn part1(raw_instructions: &Vec<String>) -> usize {
     sum
 }
 
-fn part2(instructions: &Vec<String>) -> u32 {
-    return 1;
+fn part2(raw_instructions: &Vec<String>) -> usize {
+    let instructions = parse_instructions(raw_instructions);
+    let mut grid = [[0_usize; 1000]; 1000];
+
+    for instruction in instructions {
+        let from = instruction.1;
+        let to = instruction.2;
+
+        let s = instruction.0;
+        for i in (from[0]..to[0] + 1) {
+            for j in from[1]..to[1] + 1 {
+                grid[i][j] = match s.as_str() {
+                    "turn_on" => grid[i][j] + 1,
+                    "turn_off" => grid[i][j].saturating_sub(1),
+                    _ => grid[i][j] + 2
+                }
+            }
+        }
+    }
+
+    let mut sum = 0;
+    for line in grid.iter() {
+        for &light_value in line.iter() {
+          sum += light_value
+        }
+    }
+
+    sum
 }
 
 fn parse_instructions(raw_instructions: &Vec<String>) -> Vec<(String, Vec<usize>, Vec<usize>)> {
