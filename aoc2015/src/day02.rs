@@ -22,6 +22,13 @@ impl Present {
     }
 }
 
+pub fn run() {
+    let input_file_path = "input/2015/day02.txt";
+
+    println!("AoC2015, Day2, part1 solution is: {}", part1(input_file_path));
+    println!("AoC2015, Day2, part2 solution is: {}", part2(input_file_path));
+}
+
 fn get_presents(input_file_path: impl AsRef<Path>) -> Vec<Present> {
     let input = read_to_string(input_file_path).expect("Unable to open the file");
     let mut presents_dimensions = Vec::new();
@@ -52,11 +59,3 @@ fn part2(input_file_path: &str) -> u32 {
     get_presents(input_file_path).iter()
         .fold(0, |acc, present| acc + present.ribbon())
 }
-
-pub fn run() {
-    let input_file_path = "input/2015/day02.txt";
-
-    println!("AoC2015, Day2, part1 solution is: {}", part1(input_file_path));
-    println!("AoC2015, Day2, part2 solution is: {}", part2(input_file_path));
-}
-

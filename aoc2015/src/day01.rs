@@ -1,5 +1,12 @@
-#[allow(dead_code)]
 use aoclib::read_to_chars;
+
+pub fn run() {
+    let input_file_path = "input/2015/day01.txt";
+
+    println!("AoC2015, Day1, part1 solution is: {}", part1(input_file_path));
+    println!("AoC2015, Day1, part2 solution is: {}", part2(input_file_path));
+}
+
 
 fn part1(input_file_path: &str) -> i32 {
     let chars = read_to_chars(input_file_path);
@@ -25,11 +32,4 @@ fn part2(input_file_path: &str) -> i32 {
         }
     }
     return -1;
-}
-
-pub fn run() {
-    let input_file_path = "input/2015/day01.txt";
-
-    println!("AoC2015, Day1, part1 solution is: {}", part1(input_file_path));
-    println!("AoC2015, Day1, part2 solution is: {}", part2(input_file_path));
 }

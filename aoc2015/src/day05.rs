@@ -3,6 +3,14 @@ use aoclib::read_lines;
 
 use substring::Substring;
 
+pub fn run() {
+    let lines = read_lines("input/2015/day05.txt");
+
+    println!("AoC2015, Day5, part1 solution is: {}", part1(&lines));
+    println!("AoC2015, Day5, part2 solution is: {}", part2(&lines));
+}
+
+
 fn part1(lines: &Vec<String>) -> usize {
     let vowels = HashSet::from(['a', 'e', 'i', 'o', 'u']);
     let doubles = ('a'..='z').map(|c| format!("{}{}", c, c)).collect::<HashSet<String>>();
@@ -34,11 +42,4 @@ fn part2(lines: &Vec<String>) -> usize {
             distance_one_repeat && pair_occurs_twice
         })
         .count()
-}
-
-pub fn run() {
-    let lines = read_lines("input/2015/day05.txt");
-
-    println!("AoC2015, Day5, part1 solution is: {}", part1(&lines));
-    println!("AoC2015, Day5, part2 solution is: {}", part2(&lines));
 }
