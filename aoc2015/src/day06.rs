@@ -1,4 +1,3 @@
-use std::path::Path;
 use aoclib::read_lines;
 
 pub fn run() {
