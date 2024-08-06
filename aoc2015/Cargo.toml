@@ -7,3 +7,4 @@ edition = "2021"
 aoclib = { path = "../aoclib" }
 md5 = "0.7.0"
 substring = "1.4.5"
+itertools = "0.13.0"
