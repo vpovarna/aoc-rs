@@ -16,7 +16,7 @@ fn part1(raw_instructions: &Vec<String>) -> usize {
         let to = instruction.2;
 
         let s = instruction.0;
-        for i in (from[0]..to[0] + 1) {
+        for i in from[0]..to[0] + 1 {
             for j in from[1]..to[1] + 1 {
                 grid[i][j] = match s.as_str() {
                     "turn_on" => true,
@@ -48,7 +48,7 @@ fn part2(raw_instructions: &Vec<String>) -> usize {
         let to = instruction.2;
 
         let s = instruction.0;
-        for i in (from[0]..to[0] + 1) {
+        for i in from[0]..to[0] + 1 {
             for j in from[1]..to[1] + 1 {
                 grid[i][j] = match s.as_str() {
                     "turn_on" => grid[i][j] + 1,
