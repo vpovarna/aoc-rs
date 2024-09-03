@@ -1,5 +1,5 @@
-use serde_json::Value;
-use aoclib::{read_as_string, read_lines};
+use serde_json::{Map, Value};
+use aoclib::{read_as_string};
 
 pub fn run() {
     let input = read_as_string("input/2015/day12.txt");
@@ -12,8 +12,9 @@ fn part1(input: String) -> i64 {
     sum_json(&v)
 }
 
-fn part2(input: String) -> usize {
-    1
+fn part2(input: String) -> i64 {
+    let v = serde_json::from_str(input.as_str()).expect("Unexpected to parse the input json");
+    sum_red_less(&v)
 }
 
 fn sum_json(value: &Value) -> i64 {
@@ -24,6 +25,26 @@ fn sum_json(value: &Value) -> i64 {
         Value::Object(obj) => obj.values().map(|v| sum_json(v)).sum(),
         _ => 0,
     }
+}
+
+fn sum_red_less(json: &Value) -> i64 {
+    match json {
+        Value::Number(num) =>
+            num.as_i64().unwrap(),
+        Value::Object(obj) =>
+            if has_red(obj) {
+                0
+            } else {
+                obj.iter().map(|(_, v)| sum_red_less(v)).sum()
+            },
+        Value::Array(arr) =>
+            arr.iter().map(|v| sum_red_less(v)).sum(),
+        _ => 0
+    }
+}
+
+fn has_red(obj: &Map<String, Value>) -> bool {
+    obj.iter().any(|(_, v)| v.as_str().map_or(false, |s| s == "red"))
 }
 
 #[cfg(test)]
@@ -46,5 +67,17 @@ mod test {
     fn can_sum_nested_objects() {
         let v = serde_json::from_str(r#"[-1,{"a":1}]"#).expect("failed to parse json");
         assert_eq!(sum_json(&v), 0);
+    }
+
+    #[test]
+    fn can_sum_nested_objects_with_red_key() {
+        let v = serde_json::from_str(r#"[1,{"c":"red","b":2},3]"#).expect("failed to parse json");
+        assert_eq!(sum_red_less(&v), 4);
+    }
+
+    #[test]
+    fn can_sum_nested_objects_with_red() {
+        let v = serde_json::from_str(r#"{"d":"red","e":[1,2,3,4],"f":5}"#).expect("failed to parse json");
+        assert_eq!(sum_red_less(&v), 0);
     }
 }
