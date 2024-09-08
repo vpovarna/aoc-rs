@@ -4,16 +4,29 @@ use aoclib::read_lines;
 
 pub fn run() {
     let lines = read_lines("input/2015/day13.txt");
-    let affinities = parse_input(lines);
+    let mut affinities = parse_input(lines);
 
     println!("Part 1: {}", max_happiness(&affinities));
-    // println!("Part 2: {}", part2(lines);
+    add_self(&mut affinities);
+    println!("Part 2: {}", max_happiness(&affinities));
+}
+
+fn add_self(affinities: &mut HashMap<String, HashMap<String, i16>>) {
+    let self_affinities = affinities.keys().map(|p| (p.clone(), 0)).collect();
+    affinities.insert(String:: from ("Vlad"), self_affinities);
+    affinities
+        .values_mut()
+        .for_each(|affinity_group| {
+            affinity_group.insert(String::from("Vlad"), 0);
+        });
 }
 
 fn max_happiness(affinities: &HashMap<String, HashMap<String, i16>>) -> i16 {
     affinities.keys()
         .permutations(affinities.len())
-        .map(|arrangement| find_happiness(arrangement, affinities))
+        .map(|arrangement| {
+            find_happiness(arrangement, affinities)
+        })
         .max()
         .unwrap()
 }
