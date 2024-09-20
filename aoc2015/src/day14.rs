@@ -43,9 +43,23 @@ fn parse_input(lines: Vec<String>) -> Vec<Reindeer> {
 
 
 fn part1(reindeer_stats: Vec<Reindeer>, end_time: u32) -> u32 {
-    return  reindeer_stats.iter().map(|d| d.distance(end_time)).max().unwrap();
+    return reindeer_stats.iter().map(|d| d.distance(end_time)).max().unwrap();
 }
 
 fn part2(reindeer_stats: Vec<Reindeer>, end_time: u32) -> u32 {
-    return 1;
+    let mut far: Vec<u32> = vec![0; reindeer_stats.len()];
+    for sec in 1..end_time {
+        let mut furthest = 0;
+        let mut max_distance = 0;
+
+        for (i, reindeer) in reindeer_stats.iter().enumerate() {
+            let dist = reindeer.distance(sec);
+            if dist > max_distance {
+                max_distance = dist;
+                furthest = i;
+            }
+        }
+        far[furthest] += 1
+    }
+    return *far.iter().max().unwrap()
 }
