@@ -1,67 +1,68 @@
 use std::collections::HashMap;
-use itertools::{enumerate, Itertools};
+
+use itertools::Itertools;
+use regex::Regex;
 use aoclib::read_lines;
 
 
-fn get_mfcsam_reference() -> HashMap<String, i32> {
-    HashMap::from([
-        ("children".to_string(), 3),
-        ("cats".to_string(), 7),
-        ("samoyeds".to_string(), 2),
-        ("pomeranians".to_string(), 3),
-        ("akitas".to_string(), 0),
-        ("vizslas".to_string(), 0),
-        ("goldfish".to_string(), 5),
-        ("trees".to_string(), 3),
-        ("cars".to_string(), 2),
-        ("perfumes".to_string(), 1),
-    ])
-}
-
 pub fn run() {
-    let lines = read_lines("input/2015/day16.txt");
-    let aunts = parse_input(lines);
-    let mfcsam = get_mfcsam_reference();
+    let input = read_lines("./input/2015/day16.txt");
 
-    println!("Part 1: {:?}", part1(aunts, &mfcsam));
+    let belongings = parse_input(input);
+    let aunts = belongings.keys().map(|&a| a).collect_vec();
+    let criteria = HashMap::from([
+        ("children", 3), ("cats", 7), ("samoyeds", 2), ("pomeranians", 3), ("akitas", 0),
+        ("vizslas", 0), ("goldfish", 5), ("trees", 3), ("cars", 2), ("perfumes", 1)
+    ]);
+
+    println!("Part 1: {:?}", matching_aunts(&aunts, &belongings, &criteria, exact_count_predicate));
+    println!("Part 2: {:?}", matching_aunts(&aunts, &belongings, &criteria, le_gt_count_predicate));
 }
 
-fn part1(aunts: Vec<HashMap<String, i32>>, mfcsam: &HashMap<String, i32>) -> usize {
-    for (i, sue) in enumerate(aunts) {
-        if match_sue(&sue, &mfcsam) {
-            return i + 1;
-        }
-    }
-    0
-}
-
-fn match_sue(sue: &HashMap<String, i32>, mfcsam: &HashMap<String, i32>) -> bool {
-    for (key, &value) in sue {
-        if let Some(&mfcsam_value) = mfcsam.get(key) {
-            if mfcsam_value != value {
-                return false;
+fn matching_aunts(
+    aunts: &Vec<u16>,
+    belongings: &HashMap<u16, HashMap<String, u8>>,
+    criteria: &HashMap<&str, u8>,
+    predicate: fn(&str, u8, u8) -> bool,
+) -> Vec<u16> {
+    criteria.into_iter().fold(aunts.clone(), |candidates, (&item, &expected)| {
+        candidates.into_iter().filter(|a| {
+            match belongings[a].get(item) {
+                None => true,
+                Some(&owned) => predicate(item, owned, expected)
             }
-        }
-    }
-    true
+        }).collect_vec()
+    })
 }
 
+fn exact_count_predicate(_: &str, owned: u8, expected: u8) -> bool {
+    owned == expected
+}
 
-fn parse_input(lines: Vec<String>) -> Vec<HashMap<String, i32>> {
-    let mut aunts_sue: Vec<HashMap<String, i32>> = Vec::new();
-
-    for line in lines {
-        let (_, data) = line.split_once(": ").unwrap();
-        let items = data.split(", ").collect_vec();
-        let mut map = HashMap::new();
-
-        for item in items {
-            let (name, count) = item.split_once(": ").unwrap();
-            map.insert(name.to_string(), count.parse::<i32>().unwrap());
-        }
-
-        aunts_sue.push(map)
+fn le_gt_count_predicate(item: &str, owned: u8, expected: u8) -> bool {
+    if ["cats", "trees"].contains(&item) {
+        expected < owned
+    } else if ["pomeranians", "goldfish"].contains(&item) {
+        expected > owned
+    } else {
+        expected == owned
     }
+}
 
-    aunts_sue
+fn parse_input(input: Vec<String>) -> HashMap<u16, HashMap<String, u8>> {
+    let aunt_prefix = Regex::new(r"^Sue (\d+): ").unwrap();
+
+    input.into_iter().map(|line| {
+        let caps = aunt_prefix.captures(line.as_str()).unwrap();
+        let aunt = caps[1].parse().unwrap();
+        let belongings_str = aunt_prefix.replace(line.as_str(), "");
+        let belongings = belongings_str.split(", ").collect_vec();
+
+        let counts = belongings.into_iter().map(|belonging| {
+            let parts = belonging.split(": ").collect_vec();
+            (parts[0].to_string(), parts[1].parse().unwrap())
+        }).collect();
+
+        (aunt, counts)
+    }).collect()
 }
