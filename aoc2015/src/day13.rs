@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use itertools::Itertools;
 use aoclib::read_lines;
 
+#[allow(dead_code)]
 pub fn run() {
     let lines = read_lines("input/2015/day13.txt");
     let mut affinities = parse_input(lines);
@@ -11,6 +12,7 @@ pub fn run() {
     println!("Part 2: {}", max_happiness(&affinities));
 }
 
+#[allow(dead_code)]
 fn add_self(affinities: &mut HashMap<String, HashMap<String, i16>>) {
     let self_affinities = affinities.keys().map(|p| (p.clone(), 0)).collect();
     affinities.insert(String:: from ("Vlad"), self_affinities);

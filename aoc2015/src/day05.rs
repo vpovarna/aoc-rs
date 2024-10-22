@@ -3,6 +3,7 @@ use aoclib::read_lines;
 
 use substring::Substring;
 
+#[allow(dead_code)]
 pub fn run() {
     let lines = read_lines("input/2015/day05.txt");
 
@@ -10,7 +11,7 @@ pub fn run() {
     println!("AoC2015, Day5, part2 solution is: {}", part2(&lines));
 }
 
-
+#[allow(dead_code)]
 fn part1(lines: &Vec<String>) -> usize {
     let vowels = HashSet::from(['a', 'e', 'i', 'o', 'u']);
     let doubles = ('a'..='z').map(|c| format!("{}{}", c, c)).collect::<HashSet<String>>();

@@ -1,17 +1,20 @@
 use serde_json::{Map, Value};
 use aoclib::{read_as_string};
 
+#[allow(dead_code)]
 pub fn run() {
     let input = read_as_string("input/2015/day12.txt");
     println!("Part 1: {}", part1(input.clone()));
     println!("Part 2: {}", part2(input));
 }
 
+#[allow(dead_code)]
 fn part1(input: String) -> i64 {
     let v = serde_json::from_str(input.as_str()).expect("Unexpected to parse the input json");
     sum_json(&v)
 }
 
+#[allow(dead_code)]
 fn part2(input: String) -> i64 {
     let v = serde_json::from_str(input.as_str()).expect("Unexpected to parse the input json");
     sum_red_less(&v)
@@ -23,7 +26,6 @@ fn sum_json(value: &Value) -> i64 {
         Value::Number(n) => n.as_i64().unwrap(),
         Value::Array(arr) => arr.iter().map(|a| sum_json(a)).sum(),
         Value::Object(obj) => obj.values().map(|v| sum_json(v)).sum(),
-        _ => 0,
     }
 }
 

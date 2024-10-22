@@ -1,5 +1,6 @@
 use aoclib::read_to_chars;
 
+#[allow(dead_code)]
 pub fn run() {
     let input_file_path = "input/2015/day01.txt";
 
@@ -7,7 +8,7 @@ pub fn run() {
     println!("AoC2015, Day1, part2 solution is: {}", part2(input_file_path));
 }
 
-
+#[allow(dead_code)]
 fn part1(input_file_path: &str) -> i32 {
     let chars = read_to_chars(input_file_path);
     return chars.iter().map(|x| match x {
@@ -17,6 +18,7 @@ fn part1(input_file_path: &str) -> i32 {
     }).sum::<i32>();
 }
 
+#[allow(dead_code)]
 fn part2(input_file_path: &str) -> i32 {
     let chars = read_to_chars(input_file_path);
     let mut current_floor = 0;

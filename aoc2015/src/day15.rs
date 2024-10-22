@@ -47,6 +47,7 @@ impl Day15Problem {
     }
 }
 
+#[allow(dead_code)]
 pub fn run() {
     let mut problem = Day15Problem::new();
     problem.solve();

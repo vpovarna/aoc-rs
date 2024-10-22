@@ -1,5 +1,6 @@
 use aoclib::read_lines;
 
+#[allow(dead_code)]
 pub fn run() {
     let lines = read_lines("input/2015/day06.txt");
 
@@ -7,6 +8,7 @@ pub fn run() {
     println!("AoC2015, Day6, part2 solution is: {}", part2(&lines));
 }
 
+#[allow(dead_code)]
 fn part1(raw_instructions: &Vec<String>) -> usize {
     let instructions = parse_instructions(raw_instructions);
     let mut grid = [[false; 1000]; 1000];

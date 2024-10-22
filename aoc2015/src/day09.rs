@@ -1,6 +1,7 @@
 use std::collections::{HashMap, HashSet};
 use aoclib::read_lines;
 
+#[allow(dead_code)]
 pub fn run() {
     let lines = read_lines("input/2015/day09.txt");
     let routes = parse_input(lines);
@@ -9,6 +10,7 @@ pub fn run() {
     println!("Part 2: {}", part2(adj_list.clone()));
 }
 
+#[allow(dead_code)]
 fn part1(adj_list: HashMap<String, Vec<(String, usize)>>) -> usize {
     adj_list.keys().into_iter()
         .flat_map(|source| dfs(source, &adj_list, &mut HashSet::from([source.clone()]), true))

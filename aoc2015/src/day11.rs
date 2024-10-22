@@ -1,17 +1,20 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 use itertools::Itertools;
 use aoclib::read_as_string;
 
+#[allow(dead_code)]
 pub fn run() {
     let input = read_as_string("input/2015/day11.txt");
     println!("Part 1: {}", part1(input.clone()));
     println!("Part 2: {}", part2(input));
 }
 
+#[allow(dead_code)]
 fn part1(input: String) -> String {
     get_next_valid_pass(input).unwrap_or(String::from("unknown"))
 }
 
+#[allow(dead_code)]
 fn part2(input: String) -> String {
     let unknown_password = String::from("unknown");
 

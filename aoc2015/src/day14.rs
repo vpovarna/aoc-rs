@@ -10,6 +10,7 @@ struct Reindeer {
 }
 
 impl Reindeer {
+    #[allow(dead_code)]
     fn distance(&self, seconds: u32) -> u32 {
         let stride = self.duration + self.rest;
         let stride_count = seconds / stride;
@@ -19,6 +20,7 @@ impl Reindeer {
     }
 }
 
+#[allow(dead_code)]
 pub fn run() {
     let lines = read_lines("input/2015/day14.txt");
     let stats = parse_input(lines);

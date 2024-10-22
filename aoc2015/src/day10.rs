@@ -1,12 +1,14 @@
 use itertools::Itertools;
 use aoclib::read_as_string;
 
+#[allow(dead_code)]
 pub fn run() {
     let input = read_as_string("input/2015/day10.txt");
     println!("Part 1: {}", play(input.as_str(), 40));
     println!("Part 2: {}", play(input.as_str(), 50));
 }
 
+#[allow(dead_code)]
 fn play(seed: &str, turns: u8) -> usize {
     if turns == 0 {
         seed.len()

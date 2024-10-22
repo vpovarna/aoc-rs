@@ -4,7 +4,7 @@ use itertools::Itertools;
 use regex::Regex;
 use aoclib::read_lines;
 
-
+#[allow(dead_code)]
 pub fn run() {
     let input = read_lines("./input/2015/day16.txt");
 
@@ -19,6 +19,7 @@ pub fn run() {
     println!("Part 2: {:?}", matching_aunts(&aunts, &belongings, &criteria, le_gt_count_predicate));
 }
 
+#[allow(dead_code)]
 fn matching_aunts(
     aunts: &Vec<u16>,
     belongings: &HashMap<u16, HashMap<String, u8>>,

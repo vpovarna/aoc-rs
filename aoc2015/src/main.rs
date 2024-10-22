@@ -14,6 +14,8 @@ mod day13;
 mod day14;
 mod day15;
 mod day16;
+mod day17;
+mod day18;
 
 #[warn(unused_imports)]
 fn main() {
@@ -29,8 +31,10 @@ fn main() {
     // day10::run();
     // day11::run();
     // day12::run();
-    //  day13::run();
+    // day13::run();
     // day14::run();
     // day15::run();
-    day16::run();
+    // day16::run();
+    // day17::run();
+    day18::run();
 }

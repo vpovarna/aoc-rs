@@ -1,6 +1,7 @@
 use md5::compute;
 use aoclib::read_as_string;
 
+#[allow(dead_code)]
 pub fn run() {
     let input = read_as_string( "input/2015/day04.txt");
     let part1_solution= part1(&input, 0);
@@ -8,15 +9,17 @@ pub fn run() {
     println!("AoC2015, Day4, part2 solution is: {}", part2(&input, part1_solution));
 }
 
+#[allow(dead_code)]
 fn part1(input: &String, starting_number: usize) -> usize {
     get_lowest_number(input, 5, starting_number)
 }
 
+#[allow(dead_code)]
 fn part2(input: &String, starting_number: usize) -> usize {
     get_lowest_number(input, 6, starting_number)
 }
 
-
+#[allow(dead_code)]
 fn get_lowest_number(key: &String, leading_zeros: usize, starting_number: usize) -> usize {
     let pattern = "0".repeat(leading_zeros);
     (starting_number..).find(|n| {

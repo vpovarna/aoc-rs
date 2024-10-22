@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use aoclib::read_lines;
 
+#[allow(dead_code)]
 enum Gate {
     BUFFER(Input),
     OR(Input, Input),
@@ -10,11 +11,13 @@ enum Gate {
     RSHIFT(Input, u16),
 }
 
+#[allow(dead_code)]
 enum Input {
     WIRE(String),
     SIGNAL(u16),
 }
 
+#[allow(dead_code)]
 pub fn run() {
     let mut wires = parse_wires();
 
@@ -25,7 +28,7 @@ pub fn run() {
     println!("AoC2015, Day7, part2 solution is: {}", wire_signal(&mut HashMap::new(), &wires, &String::from("a")));
 }
 
-
+#[allow(dead_code)]
 fn wire_signal(mem: &mut HashMap<String, u16>, wires: &HashMap<String, Gate>, wire: &String) -> u16 {
     match &wires[wire] {
         Gate::BUFFER(input) =>

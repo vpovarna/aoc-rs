@@ -1,5 +1,6 @@
 use aoclib::read_lines;
 
+#[allow(dead_code)]
 pub fn run() {
     let lines = read_lines("input/2015/day08.txt");
 
@@ -8,7 +9,7 @@ pub fn run() {
     println!("Part 2: {}", lines.len() * 4 + escape * 2 + ascii);
 }
 
-
+#[allow(dead_code)]
 fn count_special_chars(strings: &Vec<String>) -> (usize, usize, usize) {
     strings.iter().fold((0, 0, 0), |(quote, escape, ascii), s| {
         dfs(s, 0, quote, escape, ascii)
