@@ -1,5 +1,5 @@
 use serde_json::{Map, Value};
-use aoclib::{read_as_string};
+use aoclib::read_as_string;
 
 #[allow(dead_code)]
 pub fn run() {
