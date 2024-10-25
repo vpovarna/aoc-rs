@@ -5,7 +5,7 @@ gj RSHIFT 1 -> hc
 et RSHIFT 2 -> eu
 bv AND bx -> by
 is OR it -> iu
-b OR n -> o
+b OR N -> o
 gf OR ge -> gg
 NOT kt -> ku
 ea AND eb -> ed
@@ -70,7 +70,7 @@ NOT ax -> ay
 ci RSHIFT 1 -> db
 et AND fe -> fg
 lg OR lm -> ln
-k AND m -> n
+k AND M -> N
 hz RSHIFT 2 -> ia
 kh LSHIFT 1 -> lb
 NOT ey -> ez
@@ -230,7 +230,7 @@ he AND hp -> hr
 ev AND ew -> ey
 1 AND lu -> lv
 kk RSHIFT 3 -> km
-b AND n -> p
+b AND N -> p
 NOT kc -> kd
 lc LSHIFT 1 -> lw
 km OR kn -> ko
@@ -325,7 +325,7 @@ ib AND ic -> ie
 as RSHIFT 3 -> au
 be AND bg -> bh
 dd AND do -> dq
-NOT l -> m
+NOT l -> M
 1 AND gd -> ge
 y AND ae -> ag
 fo AND fz -> gb
