@@ -1,6 +1,5 @@
 use std::collections::{HashMap, HashSet};
-use itertools::Itertools;
-use aoclib::read_as_string;
+use aoclib::read_lines;
 
 #[allow(dead_code)]
 pub fn run() {
@@ -10,49 +9,32 @@ pub fn run() {
 
 #[allow(dead_code)]
 fn part1() -> usize {
-    let (instructions_group, sequence) = parse_input();
-    assert!(instructions_group.len() > 0);
-    let mut molecules: HashSet<String> = HashSet::new();
+    let (replacements, molecule) = parse_input();
 
-    for key in instructions_group.keys() {
-        let instruction = instructions_group.get(key).unwrap();
-        for (i, _) in sequence.chars().enumerate() {
-            if i + key > sequence.len() {
-                break;
-            }
-            let part = &sequence[i..i + key];
-            for (from, to) in instruction {
-                if part == *from {
-                    let new_str = format!("{}{}{}", &sequence[..i], to, &sequence[i + key..]);
-                    molecules.insert(new_str);
-                }
-            }
+    let mut generated_molecules = HashSet::new();
+    for (key, value) in &replacements {
+        for m in molecule.match_indices(value) {
+            let (left, right) = molecule.split_at(m.0);
+            let right = right.to_string().split_off(value.len());
+            generated_molecules.insert(format!("{left}{key}{right}"));
         }
     }
-    molecules.len()
+    generated_molecules.len()
 }
 
 
-fn parse_input() -> (HashMap<usize, Vec<(String, String)>>, String) {
-    let input = read_as_string("input/2015/day19.txt");
-    let parts = input.split("\n\n").collect_vec();
-    assert_eq!(parts.len(), 2);
+fn parse_input() -> (HashMap<String, String>, String) {
+    let input = read_lines("input/2015/day19.txt");
+    let string_molecules = input.last().unwrap().to_string();
+    let mut replacements: HashMap<String, String> = HashMap::new();
 
-    let instructions_raw = parts[0].to_string();
-    let instructions = instructions_raw
-        .split("\n")
-        .map(|s| s.to_string())
-        .collect_vec();
-
-    let mut group_instructions: HashMap<usize, Vec<(String, String)>> = HashMap::new();
-
-    for instruction in instructions {
-        let parts = instruction.split(" => ").collect_vec();
-        let key_size = parts[0].len();
-        group_instructions.entry(key_size).or_insert_with(Vec::new).push((parts[0].to_string(), parts[1].to_string()));
+    for line in input {
+        match line.split_once(" => ") {
+            Some((left, right)) => {
+                replacements.insert(right.to_string(), left.to_string());
+            }
+            None => continue
+        }
     }
-
-    let sequence = parts[1].to_string();
-
-    (group_instructions, sequence)
+    (replacements, string_molecules)
 }
