@@ -1,5 +1,4 @@
 use std::collections::{HashMap, HashSet};
-use itertools::Itertools;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 use aoclib::read_lines;
