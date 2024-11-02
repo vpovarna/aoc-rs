@@ -1,33 +1,23 @@
+use itertools::Itertools;
+
 pub fn run() {
-    let target = 29_000_000;
-    println!("Part1: {}", part1(target));
-    println!("Part2: {}", part2());
+    let min_presents = 29000000;
+    println!("Part 1: {}", first_house(min_presents, u64::MAX, 10));
+    println!("Part 2: {}", first_house(min_presents, 50, 11));
 }
 
-fn part1(target: u64) -> u64 {
-    let mut limit = 1_000_000;
-    let mut houses = vec![0u64; limit];
-
-    for i in 1..limit {
-        for j in (i..limit).step_by(i) {
-            houses[j] += i as u64 * 10;
-            if houses[j] >= target && j < limit {
-                limit = j;
-                break;
-            }
-        }
-    }
-    for (idx, house) in houses.iter().enumerate() {
-        if *house >= target {
-            return idx as u64;
-        }
-    }
-
-    return 0;
+fn first_house(min_presents: u64, max_houses: u64, presents_per_house: u64) -> u64 {
+    (1..).find(|&house| {
+        let x = factorize(house).into_iter()
+            .filter(|f| house / f <= max_houses)
+            .sum::<u64>() * presents_per_house;
+        x >= min_presents
+    }).unwrap()
 }
 
-
-fn part2() -> u64 {
-    return 1;
+fn factorize(n: u64) -> Vec<u64> {
+    (1..=(n as f64).sqrt() as u64)
+        .filter(|k| n % k == 0)
+        .flat_map(|k| if n / k != k { vec![k, n / k] } else { vec![k] })
+        .collect_vec()
 }
-
