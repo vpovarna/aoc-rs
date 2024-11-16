@@ -44,10 +44,7 @@ fn expensive_gear_that_loose(all_gears: &Vec<Gear>, player_hp: i8, boss_stats: &
 }
 
 #[allow(dead_code)]
-fn will_win(player1_gear: &Gear, hp1: i8, player2_gear: &Gear, hp2: i8) -> bool {
-    let mut hp1 = hp1;
-    let mut hp2 = hp2;
-
+fn will_win(player1_gear: &Gear, mut hp1: i8, player2_gear: &Gear, mut hp2: i8) -> bool {
     while hp1 > 0 && hp2 > 0 {
         let ch1_damage = (player1_gear.damage - player2_gear.armor).max(1);
         hp2 -= ch1_damage;
