@@ -1,72 +1,156 @@
-#[derive(Debug, Copy, Clone)]
-struct Character<'a> {
-    name: &'a str,
-    armor: i8,
-    damage: i8,
-    hit: i8,
-}
+use itertools::{iproduct, Itertools};
 
-impl<'a> Character<'a> {
-    fn new(name: &'a str, armor: i8, damage: i8, hit: i8) -> Character<'a> {
-        return Character {
-            name,
-            armor,
-            damage,
-            hit,
-        };
-    }
-
-    fn current_stats(self) {
-        println!("{} remaining hit: {},", &self.name, &self.hit)
-    }
-}
-
-fn solve(ch1: &mut Character, ch2: &mut Character) -> bool {
-    while ch1.hit > 0 && ch2.hit > 0 {
-        let ch1_damage = (ch1.damage - ch2.armor).max(1);
-        ch2.hit -= ch1_damage;
-        if ch2.hit <= 0 {
-            return true
-        }
-        let ch2_damage = (ch2.damage - ch1.armor).max(1);
-        ch1.hit -= ch2_damage;
-        if ch1.hit <= 0 {
-            return false
-        }
-        ch2.current_stats();
-        ch1.current_stats();
-        println!("=====")
-    }
-    panic!("both characters have hp under 0")
-}
 
 pub fn run() {
-    println!("Part1: {}", part1());
-    println!("Part2: {}", part2());
+    println!("{}", part1());
+    println!("{}", part2());
 }
-
 #[allow(dead_code)]
-fn part1() -> usize {
-    let mut player = Character {
-        name: "player",
-        armor: 5,
-        damage: 5,
-        hit: 8,
+fn part1() -> u16 {
+    let boss_gear = Gear {
+        damage: 8,
+        armor: 1,
+        cost: 0,
     };
+    let player_hp = 100;
+    let boss_hp = 104;
 
-    let mut boss = Character {
-        name: "boss",
-        armor: 2,
-        damage: 7,
-        hit: 12,
-    };
-
-    let t = solve(&mut player, &mut boss);
-    println!("{}", t);
-    1
+    cheapest_loads_that_win(player_hp, &boss_gear, boss_hp)
 }
 
 #[allow(dead_code)]
 fn part2() -> usize {
     1
+}
+
+fn cheapest_loads_that_win(player_hp: i8, boss_stats: &Gear, boss_hp: i8) -> u16 {
+    let mut all_gears = player_gears();
+
+    all_gears.iter()
+        .filter(|current_gear| will_win(current_gear, player_hp, boss_stats, boss_hp))
+        .map(|current_gear| current_gear.cost)
+        .min()
+        .unwrap()
+
+    // all_gears.sort_by_key(|s| s.cost);
+    //
+    // all_gears.iter()
+    //     .find(|current_gear| {
+    //         will_win(current_gear, player_hp, boss_stats, boss_hp)
+    //     })
+    //     .map(|current_gear| current_gear.cost)
+    //     .unwrap()
+}
+
+fn will_win(player1_gear: &Gear, hp1: i8, player2_gear: &Gear, hp2: i8) -> bool {
+    let mut hp1 = hp1;
+    let mut hp2 = hp2;
+
+    while hp1 > 0 && hp2 > 0 {
+        let ch1_damage = (player1_gear.damage - player2_gear.armor).max(1);
+        hp2 -= ch1_damage;
+        if hp2 <= 0 {
+            return true;
+        }
+        let ch2_damage = (player2_gear.damage - player1_gear.armor).max(1);
+        hp1 -= ch2_damage;
+        if hp1 <= 0 {
+            return false;
+        }
+    }
+    panic!("both characters have hp under 0")
+}
+
+// fn will_win(stats1: &Gear, hp1: i8, stats2: &Gear, hp2: i8) -> bool {
+//     if hp1 <= 0 {
+//         false
+//     } else if hp2 <= 0 {
+//         true
+//     } else {
+//         let new_hp2 = hp2 - (stats1.damage - stats2.armor).max(1);
+//         !will_win(stats2, new_hp2, stats1, hp1)
+//     }
+// }
+
+#[derive(Copy, Clone, Debug)]
+struct Gear {
+    damage: i8,
+    armor: i8,
+    cost: u16,
+}
+
+impl Gear {
+    fn empty() -> Self {
+        Self {
+            damage: 0,
+            armor: 0,
+            cost: 0,
+        }
+    }
+
+    fn combine(self, other: &Self) -> Self {
+        Self {
+            damage: self.damage + other.damage,
+            armor: self.armor + other.armor,
+            cost: self.cost + other.cost,
+        }
+    }
+}
+
+fn player_gears() -> Vec<Gear> {
+    let weapons = vec![
+        Gear { damage: 4, armor: 0, cost: 8 },
+        Gear { damage: 5, armor: 0, cost: 10 },
+        Gear { damage: 6, armor: 0, cost: 25 },
+        Gear { damage: 7, armor: 0, cost: 40 },
+        Gear { damage: 8, armor: 0, cost: 74 },
+    ];
+    let armors = vec![
+        Gear { damage: 0, armor: 1, cost: 13 },
+        Gear { damage: 0, armor: 2, cost: 31 },
+        Gear { damage: 0, armor: 3, cost: 53 },
+        Gear { damage: 0, armor: 4, cost: 75 },
+        Gear { damage: 0, armor: 5, cost: 102 },
+    ];
+    let rings = vec![
+        Gear { damage: 1, armor: 0, cost: 25 },
+        Gear { damage: 2, armor: 0, cost: 50 },
+        Gear { damage: 3, armor: 0, cost: 100 },
+        Gear { damage: 0, armor: 1, cost: 20 },
+        Gear { damage: 0, armor: 2, cost: 40 },
+        Gear { damage: 0, armor: 3, cost: 80 },
+    ];
+
+    // generate all the combinations between two ring
+    let two_rings: Vec<Gear> = rings.iter()
+        .combinations(2)
+        .map(|c| {
+            c[0].combine(&c[1])
+        })
+        .collect_vec();
+
+    // generate all rings combination
+    let rings_layout = [two_rings, rings, vec![Gear::empty()]].concat();
+    let armor_layouts = [armors, vec![Gear::empty()]].concat();
+
+    // let mut all_possible_gears: Vec<Gear> = vec![];
+    //
+    // for weapon in &weapons {
+    //     for ring in &rings_layout {
+    //         for armor in &armor_layouts {
+    //             let combined_gear = weapon.combine(&ring).combine(&armor);
+    //             all_possible_gears.push(combined_gear);
+    //         }
+    //     }
+    // }
+
+    // Elegant solution:
+    let all_possible_gears = iproduct!(&weapons, &armor_layouts, &rings_layout)
+        .map(|(w, a, r)| {
+            w.combine(a).combine(r)
+        }).collect_vec();
+    // println!("{:?}", all_possible_gears);
+    // println!("{:?}", all_possible_gears.len());
+
+    all_possible_gears
 }
