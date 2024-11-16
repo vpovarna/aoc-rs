@@ -1,12 +1,7 @@
 use itertools::{iproduct, Itertools};
 
-
-pub fn run() {
-    println!("{}", part1());
-    println!("{}", part2());
-}
 #[allow(dead_code)]
-fn part1() -> u16 {
+pub fn run() {
     let boss_gear = Gear {
         damage: 8,
         armor: 1,
@@ -15,17 +10,15 @@ fn part1() -> u16 {
     let player_hp = 100;
     let boss_hp = 104;
 
-    cheapest_loads_that_win(player_hp, &boss_gear, boss_hp)
+    let all_gears = player_gears();
+
+
+    println!("{}", cheapest_gear_that_win(&all_gears, player_hp, &boss_gear, boss_hp));
+    println!("{}", expensive_gear_that_loose(&all_gears, player_hp, &boss_gear, boss_hp));
 }
 
 #[allow(dead_code)]
-fn part2() -> usize {
-    1
-}
-
-fn cheapest_loads_that_win(player_hp: i8, boss_stats: &Gear, boss_hp: i8) -> u16 {
-    let mut all_gears = player_gears();
-
+fn cheapest_gear_that_win(all_gears: &Vec<Gear>, player_hp: i8, boss_stats: &Gear, boss_hp: i8) -> u16 {
     all_gears.iter()
         .filter(|current_gear| will_win(current_gear, player_hp, boss_stats, boss_hp))
         .map(|current_gear| current_gear.cost)
@@ -42,6 +35,15 @@ fn cheapest_loads_that_win(player_hp: i8, boss_stats: &Gear, boss_hp: i8) -> u16
     //     .unwrap()
 }
 
+fn expensive_gear_that_loose(all_gears: &Vec<Gear>, player_hp: i8, boss_stats: &Gear, boss_hp: i8) -> u16 {
+    all_gears.iter()
+        .filter(|current_gear| !will_win(current_gear, player_hp, boss_stats, boss_hp))
+        .map(|current_gear| current_gear.cost)
+        .max()
+        .unwrap()
+}
+
+#[allow(dead_code)]
 fn will_win(player1_gear: &Gear, hp1: i8, player2_gear: &Gear, hp2: i8) -> bool {
     let mut hp1 = hp1;
     let mut hp2 = hp2;
