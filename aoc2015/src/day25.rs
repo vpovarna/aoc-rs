@@ -1,10 +1,11 @@
 use itertools::FoldWhile::{Continue, Done};
 use itertools::Itertools;
-
+#[allow(dead_code)]
 pub fn run() {
      println!("Part 1: {}", value_at(20151125, 2981, 3075));
 }
 
+#[allow(dead_code)]
 fn value_at(first_num: u64, r: u64, c: u64) -> u64 {
     (1..).fold_while((first_num, 1, 1), |(prev_num, prev_row, prev_col), _| {
         if prev_row == r && prev_col == c {
