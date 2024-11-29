@@ -1,8 +1,9 @@
 use std::collections::HashSet;
 use itertools::FoldWhile::{Continue, Done};
 use itertools::Itertools;
-use aoclib::{read_as_string, read_lines};
+use aoclib::read_as_string;
 
+#[allow(dead_code)]
 pub fn run() {
     let input = read_as_string("input/2016/day01.txt");
     let directions = parse_input(&input);
@@ -12,6 +13,7 @@ pub fn run() {
 
 }
 
+#[allow(dead_code)]
 fn part1(directions: &Vec<(char, u16)>) -> u16 {
     let (mut x, mut y, mut direction) = (0, 0, 0);
     for (turn, steps) in directions {
@@ -21,6 +23,7 @@ fn part1(directions: &Vec<(char, u16)>) -> u16 {
     x.abs() as u16 + y.abs() as u16
 }
 
+#[allow(dead_code)]
 fn part2(directions: &Vec<(char, u16)>) -> u16 {
     let mut seen = HashSet::<(i16, i16)>::new();
     let (x, y, _) = directions.iter()
@@ -41,11 +44,12 @@ fn part2(directions: &Vec<(char, u16)>) -> u16 {
     x.abs() as u16 + y.abs() as u16
 }
 
+#[allow(dead_code)]
 fn get_path(c: i16, dc: i16) -> Vec<i16> {
     if c > dc { (dc..=c - 1).rev().collect_vec() } else { (c + 1..=dc).collect_vec() }
 }
 
-
+#[allow(dead_code)]
 fn update_position(x: i16, y: i16, dir: i32, turn: char, steps: u16) -> (i16, i16, i32) {
     let new_dir = if turn == 'R' { (dir + 1) % 4 } else { (dir + 3) % 4 };
 
@@ -58,6 +62,7 @@ fn update_position(x: i16, y: i16, dir: i32, turn: char, steps: u16) -> (i16, i1
     (new_x, new_y, new_dir)
 }
 
+#[allow(dead_code)]
 fn parse_input(input: &String) -> Vec<(char, u16)> {
     input.split(", ")
         .map(|s|
