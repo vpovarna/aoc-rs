@@ -3,12 +3,13 @@ use itertools::Itertools;
 use aoclib::read_lines;
 
 pub fn run() {
-    println!("Day1: {}", part1())
-}
-
-fn part1() -> i32 {
     let lines = read_lines("input/2016/day04.txt");
 
+    println!("Day1: {}", part1(&lines));
+    println!("Day2: {}", part2(&lines));
+}
+
+fn part1(lines: &Vec<String>) -> i32 {
     let mut count: i32 = 0;
     for line in lines {
         let room = Room::new(&line);
@@ -17,6 +18,16 @@ fn part1() -> i32 {
         }
     }
     count
+}
+
+fn part2(lines: &Vec<String>) -> i32 {
+    for line in lines {
+        let room = Room::new(&line);
+        if room.is_real() && room.decrypt() == "northpole object storage" {
+            return room.sector;
+        }
+    }
+    -1
 }
 
 #[allow(dead_code)]
@@ -69,5 +80,20 @@ impl Room {
             .collect::<String>();
 
         str == self.checksum
+    }
+
+    fn decrypt(&self) -> String {
+        let mut result = "".to_string();
+
+        let m = (self.sector % 26) as u8;
+        for c in self.name.chars() {
+            if c == '-' {
+                result.push(' ');
+            } else {
+                result.push((b'a' + ((c as u8 - b'a' + m) % 26)) as char);
+            }
+        }
+
+        result
     }
 }
