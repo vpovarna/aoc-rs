@@ -12,7 +12,7 @@ fn part1(input_str: &str) -> String {
     let mut idx = 100000;
     let mut result = "".to_string();
 
-    while true {
+    loop {
         let digest = md5::compute(format!("{}{}", input_str, idx));
         let hash = format!("{:x}", digest);
         let first_chars = &hash[0..5];
@@ -24,8 +24,6 @@ fn part1(input_str: &str) -> String {
         }
         idx += 1;
     }
-
-    return "".to_string();
 }
 
 #[allow(dead_code)]
@@ -33,7 +31,7 @@ fn part2(input_str: &str) -> String {
     let mut idx = 1000;
     let mut collect_vec = vec!['#'; 8];
 
-    while true {
+    loop {
         let digest = md5::compute(format!("{}{}", input_str, idx));
         let hash = format!("{:x}", digest);
         let first_chars = &hash[0..5];
@@ -53,6 +51,4 @@ fn part2(input_str: &str) -> String {
         }
         idx += 1;
     }
-
-    return "".to_string();
 }

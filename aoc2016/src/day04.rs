@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use itertools::Itertools;
 use aoclib::read_lines;
 
+#[allow(dead_code)]
 pub fn run() {
     let lines = read_lines("input/2016/day04.txt");
 
@@ -9,6 +10,7 @@ pub fn run() {
     println!("Day2: {}", part2(&lines));
 }
 
+#[allow(dead_code)]
 fn part1(lines: &Vec<String>) -> i32 {
     let mut count: i32 = 0;
     for line in lines {
@@ -20,6 +22,7 @@ fn part1(lines: &Vec<String>) -> i32 {
     count
 }
 
+#[allow(dead_code)]
 fn part2(lines: &Vec<String>) -> i32 {
     for line in lines {
         let room = Room::new(&line);
