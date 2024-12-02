@@ -7,35 +7,21 @@ pub fn run() {
     println!("Part1: {}", part2(&lines));
 }
 
-
 #[allow(dead_code)]
-fn part1(lines: &Vec<String>) -> u32 {
-    let mut count: u32 = 0;
-
-    for line in lines {
-        let levels = parse_line(line.to_string());
-        let status = is_safe(&levels);
-        if status {
-            count += 1;
-        }
-    }
-
-    return count;
+fn part1(lines: &Vec<String>) -> usize {
+   lines.iter()
+       .map(|line| parse_line(line.to_string()))
+       .filter(|levels| is_safe(levels))
+       .count()
 }
 
+
 #[allow(dead_code)]
-fn part2(lines: &Vec<String>) -> u32 {
-    let mut count: u32 = 0;
-
-    for line in lines {
-        let mut levels = parse_line(line.to_string());
-        let status = is_really_safe(&mut levels);
-        if status {
-            count += 1;
-        }
-    }
-
-    return count;
+fn part2(lines: &Vec<String>) -> usize {
+   lines.iter()
+       .map(|line| parse_line(line.to_string()))
+       .filter(|levels| is_really_safe(&mut levels.clone()))
+       .count()
 }
 
 #[allow(dead_code)]
