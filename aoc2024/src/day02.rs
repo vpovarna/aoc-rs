@@ -1,4 +1,3 @@
-use std::collections::HashSet;
 use aoclib::read_lines;
 
 #[allow(dead_code)]
@@ -15,15 +14,7 @@ fn part1(lines: &Vec<String>) -> u32 {
 
     for line in lines {
         let levels = parse_line(line.to_string());
-
-        if !(is_increasing(&levels) || is_decreasing(&levels)) {
-            continue;
-        }
-
-        let status = (1..levels.len())
-            .map(|i| (levels[i] - levels[i - 1]).abs())
-            .all(|diff| diff >= 1 && diff <= 3);
-
+        let status = is_safe(&levels);
         if status {
             count += 1;
         }
@@ -33,8 +24,46 @@ fn part1(lines: &Vec<String>) -> u32 {
 }
 
 #[allow(dead_code)]
-fn part2(lines: &Vec<String>) -> usize {
-    return 1;
+fn part2(lines: &Vec<String>) -> u32 {
+    let mut count: u32 = 0;
+
+    for line in lines {
+        let mut levels = parse_line(line.to_string());
+        let status = is_really_safe(&mut levels);
+        if status {
+            count += 1;
+        }
+    }
+
+    return count;
+}
+
+#[allow(dead_code)]
+fn is_really_safe(levels: &mut Vec<i16>) -> bool {
+    if is_safe(levels) {
+        return true;
+    }
+
+    for i in 0..levels.len() {
+        let mut tmp_list = levels.clone();
+        tmp_list.remove(i);
+        if is_safe(&tmp_list) {
+            return true;
+        }
+    }
+
+    false
+}
+
+#[allow(dead_code)]
+fn is_safe(levels: &Vec<i16>) -> bool {
+    if !(is_increasing(&levels) || is_decreasing(&levels)) {
+        return false;
+    }
+
+    (1..levels.len())
+        .map(|i| (levels[i] - levels[i - 1]).abs())
+        .all(|diff| diff >= 1 && diff <= 3)
 }
 
 #[allow(dead_code)]
