@@ -7,12 +7,7 @@ pub fn run() {
     let lines = read_lines("input/2024/day04.txt");
 
     println!("Part1: {}", part1(&lines));
-    println!("Part2: {}", part2());
-}
-
-#[allow(dead_code)]
-fn part2() -> usize {
-    1
+    println!("Part2: {}", part2(&lines));
 }
 
 #[allow(dead_code)]
@@ -27,6 +22,25 @@ fn part1(lines: &Vec<String>) -> usize {
                 if has_xmax((i as i16, j as i16), &grid, direction) {
                     ans += 1;
                 }
+            }
+        }
+    }
+
+    ans
+}
+
+#[allow(dead_code)]
+fn part2(lines: &Vec<String>) -> usize {
+    let grid = parse_input(lines);
+
+    let mut ans = 0;
+    let m = lines.len();
+    let n = lines.get(0).unwrap().len();
+
+    for i in 0..m {
+        for j in 0..n {
+            if has_xmax_on_diagonals((i as i16, j as i16), m as i16, n as i16, &grid) {
+                ans += 1;
             }
         }
     }
@@ -50,6 +64,23 @@ fn has_xmax(coordinate: (i16, i16), grid: &HashMap<(i16, i16), char>, direction:
     }
 
     true
+}
+
+#[allow(dead_code)]
+fn has_xmax_on_diagonals(coordinate: (i16, i16), m: i16, n: i16, grid: &HashMap<(i16, i16), char>) -> bool {
+    let (i, j) = coordinate;
+
+    if !(1 <= i && i < m - 1 && 1 <= j && j < n - 1) {
+        return false;
+    }
+    if *grid.get(&coordinate).unwrap() != 'A' {
+        return false;
+    }
+
+    let diag_1 = format!("{}{}", grid.get(&(i - 1, j - 1)).unwrap(), grid.get(&(i + 1, j + 1)).unwrap());
+    let diag_2 = format!("{}{}", grid.get(&(i - 1, j + 1)).unwrap(), grid.get(&(i + 1, j - 1)).unwrap());
+
+    (diag_1 == "MS" || diag_1 == "SM") && (diag_2 == "MS" || diag_2 == "SM")
 }
 
 
