@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use itertools::Itertools;
 use aoclib::read_as_string;
 
+#[allow(dead_code)]
 pub fn run() {
     let lines = read_as_string("input/2024/day05.txt");
 
@@ -9,6 +10,7 @@ pub fn run() {
     println!("Part2: {}", part2(&lines));
 }
 
+#[allow(dead_code)]
 fn part1(input: &String) -> usize {
     let (rules, updates) = parse_input(input);
 
@@ -22,6 +24,41 @@ fn part1(input: &String) -> usize {
     result
 }
 
+#[allow(dead_code)]
+fn part2(input: &String) -> usize {
+    let (rules, updates) = parse_input(input);
+
+    let mut result = 0;
+    for mut update in updates {
+        let (is_good, mid) = follows_rules(&rules, &update);
+        if is_good {
+            continue;
+        }
+
+        let ordered_seq = sort_correctly(&rules, &mut update);
+        result += ordered_seq[ordered_seq.len() / 2] as usize;
+    }
+    result
+}
+
+#[allow(dead_code)]
+fn sort_correctly(rules: &Vec<(u16, u16)>, update: &mut Vec<u16>) -> Vec<u16> {
+    loop {
+        let mut is_sorted = true;
+        for i in 0..update.len() - 1 {
+            if rules.contains(&(update[i+1], update[i])) {
+                update.swap(i, i+1);
+                is_sorted = false;
+            }
+        }
+        if is_sorted {
+            return update.clone();
+        }
+    }
+}
+
+
+#[allow(dead_code)]
 fn follows_rules(rules: &Vec<(u16, u16)>, updates: &Vec<u16>) -> (bool, usize) {
     let mut idx_map: HashMap<u16, u16> = HashMap::new();
 
@@ -38,11 +75,7 @@ fn follows_rules(rules: &Vec<(u16, u16)>, updates: &Vec<u16>) -> (bool, usize) {
     (true, updates[updates.len() / 2] as usize)
 }
 
-fn part2(input: &String) -> usize {
-    2
-}
-
-
+#[allow(dead_code)]
 fn parse_input(input: &String) -> (Vec<(u16, u16)>, Vec<Vec<u16>>) {
     let (parts1, part2) = input.split_once("\n\n").unwrap();
 
