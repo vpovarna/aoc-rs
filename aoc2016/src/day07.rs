@@ -10,12 +10,13 @@ pub fn run() {
 #[allow(dead_code)]
 fn part1(lines: &Vec<String>) -> i32 {
     let mut count = 0;
-    let mut has_abba_outside = false;
-    let mut has_abba_inside = false;
 
     for line in lines {
         let parsed_line = parse_line(line);
-        println!("{:?}", parsed_line);
+
+        let mut has_abba_outside = false;
+        let mut has_abba_inside = false;
+
         for (i, segment) in parsed_line.iter().enumerate() {
             if i % 2 == 0 {
                 if has_abba(segment) {
@@ -28,6 +29,7 @@ fn part1(lines: &Vec<String>) -> i32 {
                 }
             }
         }
+
         if has_abba_outside && !has_abba_inside {
             count += 1;
         }
@@ -36,28 +38,38 @@ fn part1(lines: &Vec<String>) -> i32 {
     count
 }
 
+#[allow(dead_code)]
 fn parse_line(str: &str) -> Vec<String> {
     let mut result: Vec<String> = Vec::new();
-
-    let mut i: usize = 0;
     let mut current_str = String::new();
-    let chars: Vec<char> = str.chars().collect();
 
-    while i < chars.len() {
-        let current_char: char = chars[i];
-        if current_char == '[' || current_char == ']' {
-            result.push(current_str);
-            current_str = String::new();
-        } else {
-            current_str.push(current_char);
+    for c in str.chars() {
+        match c {
+            '[' => {
+                // End of supernet sequence, push it to result
+                result.push(current_str);
+                current_str = String::new();
+            }
+            ']' => {
+                // End of hypernet sequence, push it to result
+                result.push(current_str);
+                current_str = String::new();
+            }
+            _ => {
+                current_str.push(c);
+            }
         }
-        i += 1;
     }
-    result.push(current_str);
+
+    // Don't forget to push the last segment
+    if !current_str.is_empty() {
+        result.push(current_str);
+    }
 
     return result;
 }
 
+#[allow(dead_code)]
 fn has_abba(s: &str) -> bool {
     let str_chars = s.chars().collect::<Vec<char>>();
 
