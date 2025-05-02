@@ -1,14 +1,15 @@
-use std::collections::HashMap;
 use aoclib::read_lines;
+use std::collections::HashMap;
 
 #[allow(dead_code)]
 pub fn run() {
     let lines = read_lines("input/2016/day06.txt");
-    println!("Part1: {}", part1(&lines));
+    println!("Part1: {}", solve(&lines, false));
+    println!("Part2: {}", solve(&lines, true));
 }
 
 #[allow(dead_code)]
-fn part1(lines: &Vec<String>) -> String {
+fn solve(lines: &Vec<String>, get_min: bool) -> String {
     let s = lines[0].len();
     let mut result = "".to_string();
 
@@ -24,10 +25,34 @@ fn part1(lines: &Vec<String>) -> String {
                 char_occ.insert(c, 1);
             }
         }
-        result.push(get_most_common_char(&char_occ));
+        if get_min {
+            result.push(get_least_common_char(&char_occ));
+        } else {
+            result.push(get_most_common_char(&char_occ));
+        }
     }
 
     result
+}
+
+#[allow(dead_code)]
+fn part2(lines: &Vec<String>) -> String {
+    return "".to_string();
+}
+
+#[allow(dead_code)]
+fn get_least_common_char(char_occ: &HashMap<char, i32>) -> char {
+    let mut min = i32::MAX;
+    let mut min_char = ' ';
+
+    for (k, v) in char_occ {
+        if *v < min {
+            min = *v;
+            min_char = *k;
+        }
+    }
+
+    min_char
 }
 
 #[allow(dead_code)]
