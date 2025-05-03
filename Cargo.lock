@@ -57,6 +57,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "aoc2022"
+version = "0.1.0"
+dependencies = [
+ "aoclib",
+ "itertools",
+ "lazy_static",
+ "md5",
+ "regex",
+ "substring",
+]
+
+[[package]]
 name = "aoc2024"
 version = "0.1.0"
 dependencies = [
