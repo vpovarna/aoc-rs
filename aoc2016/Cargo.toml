@@ -9,3 +9,6 @@ edition = "2021"
 aoclib = { path = "../aoclib" }
 itertools = "0.13.0"
 md5 = "0.7.0"
+lazy_static = "1.4"
+regex = "1"
+substring = "1"
