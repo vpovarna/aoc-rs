@@ -36,11 +36,6 @@ fn solve(lines: &Vec<String>, get_min: bool) -> String {
 }
 
 #[allow(dead_code)]
-fn part2(lines: &Vec<String>) -> String {
-    return "".to_string();
-}
-
-#[allow(dead_code)]
 fn get_least_common_char(char_occ: &HashMap<char, i32>) -> char {
     let mut min = i32::MAX;
     let mut min_char = ' ';
