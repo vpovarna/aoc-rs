@@ -3,6 +3,7 @@ use itertools::Itertools;
 
 const ALPHABET: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+#[allow(dead_code)]
 pub fn run() {
     let rucksack_items = read_lines("input/2022/day03.txt");
     println!("Day03, Part1: {}", part1(&rucksack_items));
