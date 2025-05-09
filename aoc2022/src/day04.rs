@@ -1,6 +1,7 @@
 use aoclib::read_lines;
 use itertools::Itertools;
 
+#[allow(dead_code)]
 pub fn run() {
     let input = read_lines("input/2022/day04.txt");
     let total = input.iter().filter(|line| {
